@@ -7,13 +7,17 @@ class Search {
   find(entity, field, keyword) {
     // check entity extension
 
-    // field type? array?
-
     // import data
     var data = DataHandler.jsonResolver(`${SETTING.DATA_FOLDER}/${entity}.json`);
 
     // get result
     let res = data.filter( record => {
+      // field type? array?
+      if (Array.isArray(record[field])) {
+        var set = new Set(record[field]);
+        return set.has(keyword);
+      }
+
       if (record[field] !== undefined) {
         return record[field].toString() === keyword
       }
@@ -37,6 +41,7 @@ class Search {
       console.log("No record founded")
     }
   }
+
 }
 
 

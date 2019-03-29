@@ -15,7 +15,7 @@ class DataHandler {
     return fs.readdirSync(SETTING.DATA_FOLDER);
   }
 
-  static removeExtension(fileArray) {
+  static getEntityFields(entity) {
 
   }
 

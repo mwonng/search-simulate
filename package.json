@@ -19,5 +19,8 @@
   },
   "devDependencies": {
     "ava": "^1.4.1"
+  },
+  "dependencies": {
+    "inquirer": "^6.2.2"
   }
 }

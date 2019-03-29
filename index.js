@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 var inquirer = require('inquirer');
+var DataHandler = require('./src/DataHandler');
+var SearchService = require('./src/Search');
+const Search = new SearchService();
 
 console.log('Welcome to Zendesk search');
 console.log("Type 'q' to exit at any time.");
@@ -25,11 +28,7 @@ inquirer.prompt([
                     type: 'list',
                     name: 'entity',
                     message: 'What entity do you want to search?',
-                    choices: [      // TODO: choices need to be dynamic
-                        'Users',
-                        'Tickets',
-                        'Orgs'
-                    ]
+                    choices: DataHandler.formatedEntitiesName()
                 },
                 {
                     type: 'input',
@@ -43,8 +42,11 @@ inquirer.prompt([
                 }
             ]).
             then(answers => {
-                console.log(JSON.stringify(answers, null, '  '));
-                // TODO: add search function
+                console.log(`Searching ${answers.entity} on ${answers.field} with value ${answers.keyword}`)
+
+                let res = Search.find(answers.entity.toLowerCase(), answers.field, answers.keyword);
+
+                Search.output(res);
             });
             break;
         case 'List all searchable fields':

@@ -18,3 +18,7 @@ npm or yarn
 ## Test
 
 `npm run test` or `yarn test`
+
+## How to add more entities
+
+put your json file into `datasource/` folder

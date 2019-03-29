@@ -1,20 +1,30 @@
 import test from 'ava';
+import user from '../datasource/users.json';
+var SearchService = require('../src/Search');
 
-
-test('search field id string', t => {
-  t.pass();
+test('search field is string', t => {
+  const Search = new SearchService();
+  var result = Search.find('users', 'name', "Loraine Pittman");
+  var exp = user.filter( u => u.name === "Loraine Pittman")
+  t.deepEqual(result, exp);
 });
 
-test('search field id bool', t => {
-  t.pass();
+test('search field is bool', t => {
+  const Search = new SearchService();
+  var result = Search.find('users', 'active', 'true');
+  var exp = user.filter( u => u.active === true)
+  t.deepEqual(result, exp);
 });
 
-test('search field id array', t => {
+test('search field is array', t => {
   t.pass();
 });
 
 test('result is not exist', t => {
-  t.pass();
+  const Search = new SearchService();
+  var result = Search.find('users', '_id', '3');
+  var exp = user.filter( u => u._id === 3)
+  t.deepEqual(result, exp);
 });
 
 test('searh field is not available', t => {
@@ -24,7 +34,6 @@ test('searh field is not available', t => {
 test('searh entity is not available', t => {
   t.pass();
 });
-
 
 // List fields
 test('List available fields for search', t => {

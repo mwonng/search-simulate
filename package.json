@@ -1,0 +1,23 @@
+{
+  "name": "zendesk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava test/*.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "ava": {
+    "files": [
+      "test/**/*.js"
+    ],
+    "require": [
+      "esm"
+    ]
+  },
+  "devDependencies": {
+    "ava": "^1.4.1"
+  }
+}

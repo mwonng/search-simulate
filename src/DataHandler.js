@@ -3,14 +3,25 @@ const axios = require('axios');
 const fs = require('fs');
 
 class DataHandler {
-
-    static isDataReady(folderPath) {
+    isDataReady(folderPath) {
         if (!fs.existsSync(folderPath)) return false;
         if (fs.readdirSync(folderPath).length <= 1) return false;
         return true;
     }
 
-    static getAllLocalEntities(folderPath) {
+    async loadingEntitiesList() {
+        return SETTING.RES_TYPE === 'remote' ?
+            await this.getAllRemoteEntities(SETTING.FETCH_ENTITIES) :
+            this.getAllLocalEntities(SETTING.DATA_FOLDER);
+    }
+
+    async loadingFields(entity) {
+        return SETTING.RES_TYPE === 'remote' ?
+            await this.getRemoteEntityFields(`${SETTING.REMOTE_END_POINT}/${entity}`) :
+            this.getLocalEntityFields(`${SETTING.DATA_FOLDER}/${entity}.json`);
+    }
+
+    getAllLocalEntities(folderPath) {
         return fs.readdirSync(folderPath);
     }
 
@@ -18,7 +29,7 @@ class DataHandler {
      * If you are going to set a fetch result, change this method
      * @param {String} endpoint
      */
-    static async getAllRemoteEntities(endpoint) {
+    async getAllRemoteEntities(endpoint) {
         let res = await axios.get(endpoint)
         let entities = res.data;   // change this to match ur remote date
         return entities;
@@ -29,7 +40,7 @@ class DataHandler {
      * @param   {String}  entityPath
      * @return  {Set}     attributes set
      */
-    static getLocalEntityFields(entityPath) {
+    getLocalEntityFields(entityPath) {
         const data = DataHandler.jsonResolver(entityPath);
         let attr = new Set();
         data.forEach(record => {
@@ -42,7 +53,7 @@ class DataHandler {
      * This method for fetch fields from server
      * @param {String} endpoint
      */
-    static async getRemoteEntityFields(endpoint) {
+    async getRemoteEntityFields(endpoint) {
         let res = await axios.get(endpoint)
         let fieldsArray = res.data;  // change this to match ur remote dat        let attr = new Set();
         let attr = new Set();
@@ -50,16 +61,6 @@ class DataHandler {
             attr = new Set([...attr, ...Object.keys(record)]);
         })
         return attr;
-    }
-
-    static formatedEntitiesName(namesArray) {
-        return namesArray.map(fullName =>
-            this.capitalize(fullName.split('.')[0])
-        )
-    }
-
-    static capitalize(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
     /**

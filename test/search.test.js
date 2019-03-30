@@ -38,19 +38,30 @@ test('result is not exist', t => {
   t.deepEqual(result, exp);
 });
 
-test('searh field is not available', t => {
-  // const Search = new SearchService();
-  // var result = Search.find('users', 'description', '');
-  // var exp = cus.filter( u => u.active === '')
-  // t.deepEqual(result, exp);
-  t.pass();
-});
-
-// test('searh entity is not available', t => {
-//   t.pass();
-// });
-
 // List fields
-test('List available fields for search', t => {
-  t.pass();
+test('List all users fields', async (t) => {
+  const Search = new SearchService();
+  var result = await Search.listAvailableFields('users');
+  const expetation = new Set([
+    '_id',
+    'url',
+    'external_id',
+    'name',
+    'alias',
+    'created_at',
+    'active',
+    'verified',
+    'shared',
+    'locale',
+    'timezone',
+    'last_login_at',
+    'email',
+    'phone',
+    'signature',
+    'organization_id',
+    'tags',
+    'suspended',
+    'role'
+  ]);
+  t.deepEqual(result, expetation);
 });

@@ -19,6 +19,8 @@ npm or yarn
 
 `npm run test` or `yarn test`
 
-## How to add more entities
+## How to add more local entities
 
 put your json file into `datasource/` folder
+
+## How to switch to fetch remote data

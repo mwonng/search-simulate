@@ -4,6 +4,11 @@ var DataHandler = require('./DataHandler');
 
 
 class Search {
+
+  entityListResponse() {
+
+  }
+
   find(entity, field, keyword) {
     // check entity extension
 
@@ -28,7 +33,6 @@ class Search {
 
   output(results) {
     let count = results.length;
-    console.log(count);
     if (count) {
       results.forEach((record,index) => {
         console.log(`------${index+1}/${count}-------`);

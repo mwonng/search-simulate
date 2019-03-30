@@ -25,17 +25,24 @@ test('search field is empty', t => {
 });
 
 test('search field is array', t => {
-  t.pass();
+  const Search = new SearchService();
+  var result = Search.find('users', 'tags', 'Leola');
+  var exp = user.filter( u => u.tags.includes('Leola'))
+  t.deepEqual(result, exp);
 });
 
 test('result is not exist', t => {
   const Search = new SearchService();
-  var result = Search.find('users', '_id', '3');
-  var exp = user.filter( u => u._id === 3)
+  var result = Search.find('users', '_id', '0');
+  var exp = user.filter( u => u._id === 0)
   t.deepEqual(result, exp);
 });
 
 test('searh field is not available', t => {
+  // const Search = new SearchService();
+  // var result = Search.find('users', 'description', '');
+  // var exp = cus.filter( u => u.active === '')
+  // t.deepEqual(result, exp);
   t.pass();
 });
 

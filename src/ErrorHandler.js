@@ -1,5 +1,4 @@
 class ErrorHandler {
-
   entityNotAvailable() {
     throw new Error('no entity data');
   }

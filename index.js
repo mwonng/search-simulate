@@ -5,9 +5,9 @@ var SETTING = require('./setting');
 
 var SearchService = require('./src/Search');
 const Search = new SearchService();
-
-console.log('Welcome to Zendesk search');
-console.log("-------------------------------------------");
+console.log("+--------------------------------------+");
+console.log('|      Welcome to Zendesk search       |');
+console.log("+--------------------------------------+");
 
 if (!DataHandler.isDataReady(SETTING.DATA_FOLDER)) {
     console.log("Error: Data folder path not exist! Please change your config in setting.js");
@@ -31,7 +31,7 @@ async function main() {
             ]
         },
     ])
-    .then(answers => {
+    .then( async (answers) => {
         // let list = DataHandler.getAllLocalEntities(SETTING.DATA_FOLDER);
         switch (answers.action) {
             case 'Start to search':
@@ -76,8 +76,14 @@ async function main() {
                 });
                 break;
             case 'List all searchable fields':
-                // TODO: add list field function
-                console.log("NOT ordered!");
+                entitiesArray.forEach( async (entity) => {
+                    let data = await Search.listAvailableFields(entity);
+                    console.log("---------------------------------------------")
+                    console.log(`Available fields for ${entity}:`)
+                    console.log("---------------------------------------------")
+                    data.forEach(attr => console.log(attr))
+                    console.log("  ")
+                })
                 break;
             case 'Quit':
                 process.exit(1);

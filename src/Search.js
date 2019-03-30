@@ -46,7 +46,13 @@ class Search {
     }
   }
 
+  async listAvailableFields(entityName) {
+    if (SETTING.RES_TYPE === 'local') {
+      return DataHandler.getLocalEntityFields(`${SETTING.DATA_FOLDER}/${entityName}`);
+    } else {
+      return await DataHandler.getRemoteEntityFields(`${SETTING.REMOTE_END_POINT}/${entityName}`);
+    }
+  }
 }
-
 
 module.exports = Search;

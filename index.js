@@ -67,7 +67,6 @@ async function main() {
                     console.log("---------------------------------------------")
                     console.log(`Searching ${entity} on ${field} with value ${keywordAnswer.keyword}`)
                     let res = await Search.loadingResponse(entity.toLowerCase(), field, keywordAnswer.keyword);
-                    console.log(res);
                     Search.output(res);
                 } else {
                     console.log("Error: This field looks not available, please try another field.");

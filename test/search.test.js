@@ -5,35 +5,35 @@ var SearchService = require('../src/SearchService');
 
 test('search field is string', t => {
   const Search = new SearchService();
-  var result = Search.find('users', 'name', "Loraine Pittman");
+  var result = Search.findLocal('users', 'name', "Loraine Pittman");
   var exp = user.filter( u => u.name === "Loraine Pittman")
   t.deepEqual(result, exp);
 });
 
 test('search field is bool', t => {
   const Search = new SearchService();
-  var result = Search.find('users', 'active', 'true');
+  var result = Search.findLocal('users', 'active', 'true');
   var exp = user.filter( u => u.active === true)
   t.deepEqual(result, exp);
 });
 
 test('search field is empty', t => {
   const Search = new SearchService();
-  var result = Search.find('users', 'description', '');
+  var result = Search.findLocal('users', 'description', '');
   var exp = cus.filter( u => u.active === '')
   t.deepEqual(result, exp);
 });
 
 test('search field is array', t => {
   const Search = new SearchService();
-  var result = Search.find('users', 'tags', 'Leola');
+  var result = Search.findLocal('users', 'tags', 'Leola');
   var exp = user.filter( u => u.tags.includes('Leola'))
   t.deepEqual(result, exp);
 });
 
 test('result is not exist', t => {
   const Search = new SearchService();
-  var result = Search.find('users', '_id', '0');
+  var result = Search.findLocal('users', '_id', '0');
   var exp = user.filter( u => u._id === 0)
   t.deepEqual(result, exp);
 });

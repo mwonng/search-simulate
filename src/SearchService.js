@@ -6,7 +6,6 @@ const inquirer = require('inquirer');
 
 
 class Search {
-
     /**
      * find method locally
      * @param {String} entity

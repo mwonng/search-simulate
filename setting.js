@@ -1,8 +1,8 @@
 const PROJECT_FOLDER = process.cwd();
 
 const DATA_TYPE = 'json';
-const RES_TYPE = 'local';   // 'local' or 'remote'
-// const RES_TYPE = 'remote';   // 'local' or 'remote'
+// const RES_TYPE = 'local';   // 'local' or 'remote'
+const RES_TYPE = 'remote';   // 'local' or 'remote'
 const DATA_FOLDER = `${PROJECT_FOLDER}/datasource`;
 
 const REMOTE_END_POINT = "https://express-routing-example-dxroangojb.now.sh";

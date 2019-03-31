@@ -21,7 +21,10 @@ class DataHandler {
             this.getLocalEntityFields(`${SETTING.DATA_FOLDER}/${entity}.json`);
     }
 
-    getAllLocalEntities(folderPath) {
+    async getAllLocalEntities(folderPath) {
+        if (!this.isDataReady(folderPath)) {
+            throw new Error("Error: getAllLocalEntities() cannot get entities from folder");
+        }
         return fs.readdirSync(folderPath);
     }
 
@@ -30,9 +33,13 @@ class DataHandler {
      * @param {String} endpoint
      */
     async getAllRemoteEntities(endpoint) {
-        let res = await axios.get(endpoint)
-        let entities = res.data;   // change this to match ur remote date
-        return entities;
+        try {
+            let res = await axios.get(endpoint)
+            let entities = res.data;   // change this to match ur remote date
+            return entities;
+        } catch(err) {
+            throw new Error("Error: getAllRemoteEntities() cannot get entities from endpoint");
+        }
     }
 
     /**
@@ -54,13 +61,18 @@ class DataHandler {
      * @param {String} endpoint
      */
     async getRemoteEntityFields(endpoint) {
-        let res = await axios.get(endpoint)
-        let fieldsArray = res.data;  // change this to match ur remote dat        let attr = new Set();
-        let attr = new Set();
-        fieldsArray.forEach(record => {
-            attr = new Set([...attr, ...Object.keys(record)]);
-        })
-        return attr;
+        try {
+            let res = await axios.get(endpoint)
+            let fieldsArray = res.data;  // change this to match ur remote dat        let attr = new Set();
+            let attr = new Set();
+            fieldsArray.forEach(record => {
+                attr = new Set([...attr, ...Object.keys(record)]);
+            })
+            return attr;
+        } catch(err) {
+            throw new Error("Error: getRemoteEntityFields() cannot get fields from endpoint");
+        }
+
     }
 
     /**

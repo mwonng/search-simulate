@@ -65,7 +65,7 @@ async function main() {
                 if (attrSet.has(field)) {
                     let keywordAnswer = await inquirer.prompt(keywordQuestion);
                     console.log("---------------------------------------------")
-                    console.log(`Searching ${entity} on ${field} with value ${keywordAnswer.keyword}`)
+                    console.log(`Searching '${entity}' on '${field}' with value '${keywordAnswer.keyword}'`)
                     let res = await Search.loadingResponse(entity.toLowerCase(), field, keywordAnswer.keyword);
                     Search.output(res);
                 } else {

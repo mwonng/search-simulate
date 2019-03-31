@@ -9,8 +9,6 @@ var inquirer = require('inquirer');
 class Search {
 
     findLocal(entity, field, keyword) {
-        // check entity extension
-
         // import data
         var data = DataHandler.jsonResolver(`${SETTING.DATA_FOLDER}/${entity}.json`);
 

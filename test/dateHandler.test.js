@@ -1,9 +1,6 @@
 import test from 'ava';
 const SETTING = require('../setting');
 const DataHandler = require('../src/DataHandler');
-// import user from '../datasource/users.json';
-// import cus from '../datasource/customers.json';
-// var SearchService = require('../src/Search');
 
 
 test('getAllLocalEntities()', async (t) => {
@@ -20,12 +17,40 @@ test('getAllRemoteEntities()', async (t) => {
   t.deepEqual(list, expetation);
 });
 
-test('getLocalEntityFields()', t => {
-  t.pass();
+test('getLocalEntityFields()', async t => {
+  const Data = new DataHandler();
+  let entityName = 'organizations.json';
+  let result = Data.getLocalEntityFields(`${SETTING.DATA_FOLDER}/${entityName}`)
+  let expetation = new Set([
+    "_id",
+    "url",
+    "external_id",
+    "name",
+    "domain_names",
+    "created_at",
+    "details",
+    "shared_tickets",
+    "tags"
+  ])
+  t.deepEqual(result, expetation);
 });
 
-test('getRemoteEntityFields()', t => {
-  t.pass();
+test('getRemoteEntityFields()', async t => {
+  const Data = new DataHandler();
+  let entityName = 'organizations';
+  var result = await Data.getRemoteEntityFields(`${SETTING.REMOTE_END_POINT}/${entityName}`);
+  let expetation = new Set([
+    "_id",
+    "url",
+    "external_id",
+    "name",
+    "domain_names",
+    "created_at",
+    "details",
+    "shared_tickets",
+    "tags"
+  ])
+  t.deepEqual(result, expetation);
 });
 
 test('formatedEntitiesName()', t => {

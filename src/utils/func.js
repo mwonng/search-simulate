@@ -8,13 +8,4 @@ module.exports = {
   capitalize: function(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   },
-
-  readableLine:  function(key, value) {
-    if (Array.isArray(value)) {
-      value = JSON.stringify(value);
-    } else {
-      value = value.toString();
-    }
-    return key.padEnd(30) + value.toString().padEnd(50);
-  }
 }

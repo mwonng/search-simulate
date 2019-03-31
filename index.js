@@ -10,7 +10,7 @@ const figlet = require("figlet");
 const SearchService = require('./src/SearchService');
 
 function hello() {
-    output(
+    output.line(
         chalk.cyan(
         figlet.textSync("Hello  Zendesk", {
             font: "Standard",
@@ -77,23 +77,24 @@ async function main() {
 
                 if (attrSet.has(field)) {
                     let keywordAnswer = await inquirer.prompt(keywordQuestion);
-                    output("---------------------------------------------")
-                    output(`Searching '${entity}' on '${field}' with value '${keywordAnswer.keyword}'`)
+                    output.line("---------------------------------------------")
+                    output.line(`Searching '${entity}' on '${field}' with value '${keywordAnswer.keyword}'`)
                     let res = await Search.loadingResponse(entity.toLowerCase(), field, keywordAnswer.keyword);
-                    Search.output(res);
+                    Search.printResults(res);
                 } else {
-                    error('Error: This field looks not available, please try another field.', true)
+                    error('This field looks not available, please try another field.', true)
                 }
                 break;
             case 'List all searchable fields':
-                entitiesArray.forEach( async (entity) => {
-                    let data = await Search.listAvailableFields(entity);
-                    output("---------------------------------------------")
-                    output(`Available fields for ${entity}:`)
-                    output("---------------------------------------------")
-                    data.forEach(attr => console.log(attr))
-                    output("  ")
-                })
+                func.formatedEntitiesName(entitiesArray)
+                    .forEach( entity => {
+                        let data = Data.loadingFields(entity.toLowerCase());
+                        output.line("---------------------------------------------")
+                        output.line(`Available fields for ${entity}:`)
+                        output.line("---------------------------------------------")
+                        data.forEach(attr => console.log(attr))
+                        output.line("  ")
+                    });
                 break;
             case 'Quit':
                 process.exit(1);

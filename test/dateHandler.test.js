@@ -27,7 +27,3 @@ test('getLocalEntityFields()', async t => {
   ])
   t.deepEqual(result, expetation);
 });
-
-test('formatedEntitiesName()', t => {
-  t.pass();
-});

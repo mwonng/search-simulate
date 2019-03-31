@@ -1,4 +1,3 @@
-
 module.exports = {
   formatedEntitiesName: function(namesArray) {
     return namesArray.map(fullName =>

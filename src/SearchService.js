@@ -42,36 +42,40 @@ class Search {
     output(results) {
         let count = results.length;
         if (count) {
-            this.pagenatePrint(results);
+            this.pagenatePrint(results, SETTING.SEARCH_RESULT_PER_PAGE);
         } else {
             console.log("Result:")
             console.log("No record founded")
         }
     }
 
-    async pagenatePrint(records) {
-        let currentIndex = 0;
+    async pagenatePrint(records, countPerPage) {
+        let currentPage = 1;
         let maxIndex = records.length;
-        while (currentIndex < maxIndex) {
-            console.log(`------Result: ${currentIndex + 1}/${maxIndex}-------`);
-            let currentRecord = records[currentIndex];
-            Object.keys(currentRecord).forEach(key => {
-                let line = func.readableLine(key, currentRecord[key]);
-                console.log(line)
-            });
-            if (currentIndex < maxIndex - 1) {
+        let lastPage = Math.ceil(maxIndex / countPerPage);
+
+        while (currentPage <= lastPage) {
+            for (let i = (currentPage - 1) * countPerPage ; i < currentPage * countPerPage && i < maxIndex; i++) {
+                console.log(`------Result: ${i + 1}/${maxIndex}-------`);
+                let currentRecord = records[i];
+                Object.keys(currentRecord).forEach(key => {
+                    let line = func.readableLine(key, currentRecord[key]);
+                    console.log(line)
+                });
+            }
+            if (currentPage < lastPage) {
                 const userInput = await inquirer.prompt([
                     {
                         type: 'input',
                         name: 'continue',
-                        message: 'press Enter for next record, press q or Ctrl + c to quit:'
+                        message: 'press Enter for next page, press q or Ctrl + c to quit:'
                     }
                 ])
                 if (userInput.continue === 'q') {
                     process.exit(1);
                 }
             }
-            currentIndex++;
+            currentPage++;
         }
     }
 

@@ -7,7 +7,7 @@ const DATA_FOLDER = `${PROJECT_FOLDER}/datasource`;
 
 const REMOTE_END_POINT = "https://express-routing-example-dxroangojb.now.sh";
 const FETCH_ENTITIES = `${REMOTE_END_POINT}/entities/`;
-
+const SEARCH_RESULT_PER_PAGE = 1;
 // const DATA_FOLDER = `${PROJECT_FOLDER}/empty`;
 
 module.exports = {
@@ -16,5 +16,6 @@ module.exports = {
   DATA_TYPE: DATA_TYPE,
   RES_TYPE: RES_TYPE,
   REMOTE_END_POINT: REMOTE_END_POINT,
-  FETCH_ENTITIES: FETCH_ENTITIES
+  FETCH_ENTITIES: FETCH_ENTITIES,
+  SEARCH_RESULT_PER_PAGE: SEARCH_RESULT_PER_PAGE
 }

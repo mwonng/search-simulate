@@ -48,7 +48,7 @@ class Search {
     printResults(results) {
         let count = results.length;
         if (count) {
-            output.pagenatePrint(results, SETTING.SEARCH_RESULT_PER_PAGE);
+            output.pagenatePrint(results, SETTING.SEARCH_RESULT_PER_PAGE, output.readableAttrPrint);
         } else {
             output.line('-------------------------')
             error("No record founded.", false)

@@ -1,7 +1,7 @@
 import test from 'ava';
 import user from '../datasource/users.json';
 import cus from '../datasource/customers.json';
-var SearchService = require('../src/SearchService');
+const SearchService = require('../src/SearchService');
 
 test('local - search field is string', t => {
   const Search = new SearchService();

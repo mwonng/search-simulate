@@ -1,15 +1,29 @@
 #!/usr/bin/env node
-var inquirer = require('inquirer');
-var DataHandler = require('./src/DataHandler');
-var SETTING = require('./setting');
+const inquirer = require('inquirer');
+const DataHandler = require('./src/DataHandler');
+const SETTING = require('./setting');
 const func = require('./src/func');
-var SearchService = require('./src/SearchService');
-console.log("+--------------------------------------+");
-console.log('|      Welcome to Zendesk search       |');
-console.log("+--------------------------------------+");
+const chalk = require("chalk");
+const figlet = require("figlet");
+const SearchService = require('./src/SearchService');
+// console.log("+--------------------------------------+");
+// console.log('|      Welcome to Zendesk search       |');
+// console.log("+--------------------------------------+");
 
+function hello() {
+    console.log(
+        chalk.cyan(
+        figlet.textSync("Hello  Zendesk", {
+            font: "Standard",
+            horizontalLayout: "default",
+            verticalLayout: "default"
+        })
+        )
+    );
+}
 
 async function main() {
+    hello();
     const Search = new SearchService();
     const Data = new DataHandler();
 

@@ -1,4 +1,4 @@
-var SETTING = require('../setting');
+const SETTING = require('../setting');
 const axios = require('axios');
 const fs = require('fs');
 

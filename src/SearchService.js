@@ -1,9 +1,8 @@
-var fs = require('fs');
-var SETTING = require('../setting');
-var DataHandler = require('./DataHandler');
+const SETTING = require('../setting');
+const DataHandler = require('./DataHandler');
 const axios = require('axios');
 const func = require('./func');
-var inquirer = require('inquirer');
+const inquirer = require('inquirer');
 
 
 class Search {

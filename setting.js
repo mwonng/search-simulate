@@ -7,8 +7,7 @@ const DATA_FOLDER = `${PROJECT_FOLDER}/datasource`;
 
 const REMOTE_END_POINT = "https://express-routing-example-dxroangojb.now.sh";
 const FETCH_ENTITIES = `${REMOTE_END_POINT}/entities/`;
-const SEARCH_RESULT_PER_PAGE = 1;
-// const DATA_FOLDER = `${PROJECT_FOLDER}/empty`;
+const SEARCH_RESULT_PER_PAGE = 5;   // default as 5 for result showing per page;
 
 module.exports = {
   DATA_FOLDER: DATA_FOLDER,

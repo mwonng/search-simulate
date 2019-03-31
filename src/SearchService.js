@@ -1,7 +1,8 @@
 const SETTING = require('../setting');
 const DataHandler = require('./DataHandler');
 const axios = require('axios');
-const func = require('./func');
+const func = require('./utils/func');
+const output = require('./utils/func');
 const inquirer = require('inquirer');
 
 
@@ -33,26 +34,13 @@ class Search {
     }
 
     /**
-     * find request GET method from remote
-     * @param {String} entity
-     * @param {String} field
-     * @param {String} keyword
-     */
-    async findRemote(entity, field, keyword) {
-        let res = await axios.get(`${SETTING.REMOTE_END_POINT}/${entity}/search?field=${field}&value=${keyword}`);
-        return res.data;
-    }
-
-    /**
      * get response from find method;
      * @param {String} entity
      * @param {String} field
      * @param {String} keyword
      */
     async loadingResponse(entity, field, keyword) {
-        return SETTING.RES_TYPE === 'remote' ?
-            await this.findRemote(entity, field, keyword) :
-            this.findLocal(entity, field, keyword);
+        return this.findLocal(entity, field, keyword);
     }
 
     output(results) {
@@ -60,8 +48,8 @@ class Search {
         if (count) {
             this.pagenatePrint(results, SETTING.SEARCH_RESULT_PER_PAGE);
         } else {
-            console.log("Result:")
-            console.log("No record founded")
+            output("Result:")
+            output("No record founded")
         }
     }
 
@@ -77,11 +65,11 @@ class Search {
 
         while (currentPage <= lastPage) {
             for (let i = (currentPage - 1) * countPerPage ; i < currentPage * countPerPage && i < maxIndex; i++) {
-                console.log(`------Result: ${i + 1}/${maxIndex}-------`);
+                output(`------Result: ${i + 1}/${maxIndex}-------`);
                 let currentRecord = records[i];
                 Object.keys(currentRecord).forEach(key => {
                     let line = func.readableLine(key, currentRecord[key]);
-                    console.log(line)
+                    output(line)
                 });
             }
             if (currentPage < lastPage) {
@@ -89,7 +77,7 @@ class Search {
                     {
                         type: 'input',
                         name: 'continue',
-                        message: 'press Enter for next page, press q or Ctrl + c to quit:'
+                        message: `page ${currentPage}/ ${lastPage}, press 'Enter' to next page, press 'q' or 'ctrl + c' to exit:`
                     }
                 ])
                 if (userInput.continue === 'q') {
@@ -106,11 +94,7 @@ class Search {
      */
     async listAvailableFields(entityName) {
         const Data = new DataHandler();
-        if (SETTING.RES_TYPE === 'local') {
-            return Data.getLocalEntityFields(`${SETTING.DATA_FOLDER}/${entityName}`);
-        } else {
-            return await Data.getRemoteEntityFields(`${SETTING.REMOTE_END_POINT}/${entityName}`);
-        }
+        return Data.getLocalEntityFields(`${SETTING.DATA_FOLDER}/${entityName}`);
     }
 }
 

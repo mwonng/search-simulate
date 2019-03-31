@@ -2,16 +2,15 @@
 const inquirer = require('inquirer');
 const DataHandler = require('./src/DataHandler');
 const SETTING = require('./setting');
-const func = require('./src/func');
+const func = require('./src/utils/func');
+const error = require('./src/utils/error');
+const output = require('./src/utils/output');
 const chalk = require("chalk");
 const figlet = require("figlet");
 const SearchService = require('./src/SearchService');
-// console.log("+--------------------------------------+");
-// console.log('|      Welcome to Zendesk search       |');
-// console.log("+--------------------------------------+");
 
 function hello() {
-    console.log(
+    output(
         chalk.cyan(
         figlet.textSync("Hello  Zendesk", {
             font: "Standard",
@@ -28,7 +27,7 @@ async function main() {
     const Data = new DataHandler();
 
     try {
-        let entitiesArray = await Data.loadingEntitiesList();
+        let entitiesArray = Data.loadingEntitiesList();
         let formatedEntitiesName = func.formatedEntitiesName(entitiesArray);
 
         const mainQuestion =  [
@@ -74,26 +73,26 @@ async function main() {
                 let field = searchQues.field.trim().toLowerCase();
 
                 // loading attributes set for entity
-                let attrSet = await Data.loadingFields(entity);
+                let attrSet = Data.loadingFields(entity);
 
                 if (attrSet.has(field)) {
                     let keywordAnswer = await inquirer.prompt(keywordQuestion);
-                    console.log("---------------------------------------------")
-                    console.log(`Searching '${entity}' on '${field}' with value '${keywordAnswer.keyword}'`)
+                    output("---------------------------------------------")
+                    output(`Searching '${entity}' on '${field}' with value '${keywordAnswer.keyword}'`)
                     let res = await Search.loadingResponse(entity.toLowerCase(), field, keywordAnswer.keyword);
                     Search.output(res);
                 } else {
-                    console.log("Error: This field looks not available, please try another field.");
+                    error('Error: This field looks not available, please try another field.', true)
                 }
                 break;
             case 'List all searchable fields':
                 entitiesArray.forEach( async (entity) => {
                     let data = await Search.listAvailableFields(entity);
-                    console.log("---------------------------------------------")
-                    console.log(`Available fields for ${entity}:`)
-                    console.log("---------------------------------------------")
+                    output("---------------------------------------------")
+                    output(`Available fields for ${entity}:`)
+                    output("---------------------------------------------")
                     data.forEach(attr => console.log(attr))
-                    console.log("  ")
+                    output("  ")
                 })
                 break;
             case 'Quit':
@@ -101,7 +100,7 @@ async function main() {
             default:
         }
     } catch (err) {
-        console.log(err);
+        error(err, true)
     }
 }
 

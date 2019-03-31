@@ -8,6 +8,12 @@ var inquirer = require('inquirer');
 
 class Search {
 
+    /**
+     * find method locally
+     * @param {String} entity
+     * @param {String} field
+     * @param {String} keyword
+     */
     findLocal(entity, field, keyword) {
         // import data
         var data = DataHandler.jsonResolver(`${SETTING.DATA_FOLDER}/${entity}.json`);
@@ -28,11 +34,23 @@ class Search {
         return res;
     }
 
+    /**
+     * find request GET method from remote
+     * @param {String} entity
+     * @param {String} field
+     * @param {String} keyword
+     */
     async findRemote(entity, field, keyword) {
         let res = await axios.get(`${SETTING.REMOTE_END_POINT}/${entity}/search?field=${field}&value=${keyword}`);
         return res.data;
     }
 
+    /**
+     * get response from find method;
+     * @param {String} entity
+     * @param {String} field
+     * @param {String} keyword
+     */
     async loadingResponse(entity, field, keyword) {
         return SETTING.RES_TYPE === 'remote' ?
             await this.findRemote(entity, field, keyword) :
@@ -49,6 +67,11 @@ class Search {
         }
     }
 
+    /**
+     * If results are too many, show record by paginator. default setting on ./setting.json
+     * @param {Array} records
+     * @param {Int} countPerPage
+     */
     async pagenatePrint(records, countPerPage) {
         let currentPage = 1;
         let maxIndex = records.length;
@@ -79,6 +102,10 @@ class Search {
         }
     }
 
+    /**
+     * List fields for one entity;
+     * @param {String} entityName
+     */
     async listAvailableFields(entityName) {
         const Data = new DataHandler();
         if (SETTING.RES_TYPE === 'local') {

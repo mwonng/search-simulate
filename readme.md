@@ -32,3 +32,11 @@ npm or yarn
 put your json file into `datasource/` folder
 
 ## How to switch to fetch remote data
+
+*customize the request url to match your own response*
+
+for any search, you have three params to send in `findRemote(entity, field, keyword` in `./src/SearchService.js`
+
+- entity : the entity you are looking for search
+- field : the field you are looking for search
+- keyword : the value match your keyword.

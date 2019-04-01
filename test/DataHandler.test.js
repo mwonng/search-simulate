@@ -1,7 +1,7 @@
 import test from 'ava';
 const SETTING = require('../setting');
 const DataHandler = require('../src/DataHandler');
-
+const user = require('../datasource/users.json');
 
 test('getAllLocalEntities()', async (t) => {
   const Data = new DataHandler();
@@ -37,12 +37,13 @@ test('getJoinedFields() for user', t => {
   t.deepEqual(fields, expect);
 });
 
-test('getOneBelongsToData() for user', t => {
-  const Data = new DataHandler();
-  let fields = Data.getOneBelongsToData('organizations', 119, 'name');
-  let expect = 'Multron';
-  t.deepEqual(fields, expect);
-});
+// test('getOneBelongsToData() for user', t => {
+//   const Data = new DataHandler();
+//   const record = user[0]
+//   let fields = Data.getOneBelongsToData('organizations', 119, 'name');
+//   let expect = 'Multron';
+//   t.deepEqual(fields, expect);
+// });
 
 test('joinBelongesData() for user', t => {
 

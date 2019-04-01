@@ -25,6 +25,7 @@ async function main() {
     hello();
     const Search = new SearchService();
     const Data = new DataHandler();
+    const index = Data.generateAllIndex();
 
     try {
         let entitiesArray = Data.loadingEntitiesList();

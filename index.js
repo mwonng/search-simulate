@@ -79,7 +79,7 @@ async function main() {
                     let keywordAnswer = await inquirer.prompt(keywordQuestion);
                     output.line("---------------------------------------------")
                     output.line(`Searching '${entity}' on '${field}' with value '${keywordAnswer.keyword}'`)
-                    let res = await Search.loadingResponse(entity.toLowerCase(), field, keywordAnswer.keyword);
+                    let res = await Search.loadingResponse(entity, field, keywordAnswer.keyword);
                     Search.printResults(res);
                 } else {
                     error('This field looks not available, please try another field.', true)
@@ -92,7 +92,7 @@ async function main() {
                         output.line("---------------------------------------------")
                         output.line(`Available fields for ${entity}:`)
                         output.line("---------------------------------------------")
-                        data.forEach(attr => console.log(attr))
+                        data.forEach(attr => output.line(attr))
                         output.line("  ")
                     });
                 break;

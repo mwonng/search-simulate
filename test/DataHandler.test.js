@@ -27,3 +27,27 @@ test('getLocalEntityFields()', async t => {
   ])
   t.deepEqual(result, expetation);
 });
+
+test('getJoinedField() for user', t => {
+  const Data = new DataHandler();
+  let fields = Data.getJoinedField('users');
+  let expect = ['organization', 'as_submitter', 'as_assignee'];
+  t.deepEqual(fields, expect);
+});
+
+test('getOneJoinedData() for user', t => {
+  const Data = new DataHandler();
+  let fields = Data.getOneJoinedData('user','organization',1);
+  let expect = 'Multron';
+  t.deepEqual(fields, expect);
+});
+
+test('joinBelongesData() for user', t => {
+
+  t.pass()
+});
+
+test('joinHasManyData() for user', t => {
+
+  t.pass()
+});

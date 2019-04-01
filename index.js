@@ -28,7 +28,7 @@ async function main() {
 
     try {
         let entitiesArray = Data.loadingEntitiesList();
-        let formatedEntitiesName = func.formatedEntitiesName(entitiesArray);
+        let formatedEntitiesName = func.formateEntitiesName(entitiesArray, true);
 
         const mainQuestion =  [
             {
@@ -86,9 +86,9 @@ async function main() {
                 }
                 break;
             case 'List all searchable fields':
-                func.formatedEntitiesName(entitiesArray)
+                func.formateEntitiesName(entitiesArray)
                     .forEach( entity => {
-                        let data = Data.loadingFields(entity.toLowerCase());
+                        let data = Data.loadingFields(entity);
                         output.line("---------------------------------------------")
                         output.line(`Available fields for ${entity}:`)
                         output.line("---------------------------------------------")

@@ -1,6 +1,5 @@
 import test from 'ava';
 import user from '../datasource/users.json';
-import cus from '../datasource/customers.json';
 const SearchService = require('../src/SearchService');
 
 test('local - search field is string', t => {
@@ -20,7 +19,7 @@ test('local - search field is bool', t => {
 test('local - search field is empty', t => {
   const Search = new SearchService();
   const result = Search.findLocal('users', 'description', '');
-  const exp = cus.filter( u => u.active === '')
+  const exp = user.filter( u => u.description === '')
   t.deepEqual(result, exp);
 });
 

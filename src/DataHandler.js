@@ -1,5 +1,6 @@
 const SETTING = require('../setting');
 const fs = require('fs');
+const func = require('./utils/func');
 
 class DataHandler {
     isDataReady(folderPath) {
@@ -13,7 +14,7 @@ class DataHandler {
     }
 
     loadingFields(entity) {
-        return this.getLocalEntityFields(`${SETTING.DATA_FOLDER}/${entity}.json`);
+        return this.getLocalEntityFields(entity);
     }
 
     getAllLocalEntities(folderPath) {
@@ -28,13 +29,31 @@ class DataHandler {
      * @param   {String}  entityPath
      * @return  {Set}     attributes set
      */
-    getLocalEntityFields(entityPath) {
-        const data = DataHandler.jsonResolver(entityPath);
+    getLocalEntityFields(entity) {
+        // get original attr as max for all records
+        const data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
         let attr = new Set();
         data.forEach(record => {
             attr = new Set([...attr, ...Object.keys(record)]);
         })
-        return attr;
+
+        // get related attr from schema
+        let relatedAttr = this.getJoinedFields(entity);
+        let joinedAttr = new Set([...attr, ...relatedAttr]);
+
+        return joinedAttr;
+    }
+
+    getJoinedFields(entity) {
+        var schema = require(`${SETTING.SCHEMA_FOLDER}/${entity}`);
+        let fields = schema.map(setting => setting.joined_name);
+        return new Set(fields);
+    }
+
+    getOneBelongsToData(destinationEntity, forKeyValue, value_from_field, pkey='_id') {
+        let belongsToEntity = require(`${SETTING.DATA_FOLDER}/${destinationEntity}.json`);
+        let relatedRecord = belongsToEntity.find((el)=> el[pkey] === forKeyValue)
+        return relatedRecord[value_from_field];
     }
 
     /**
@@ -42,7 +61,7 @@ class DataHandler {
      * @param {String} filePath
      * @return json format data
      */
-    static jsonResolver(filePath) {
+    jsonResolver(filePath) {
         try {
             return JSON.parse(fs.readFileSync(filePath, 'utf8'));
         } catch (e) {

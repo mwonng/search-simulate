@@ -1,8 +1,9 @@
 const func = {
-    formatedEntitiesName: function (namesArray) {
-        return namesArray.map(fullName =>
-            func.capitalize(fullName.split('.')[0])
-        )
+    formateEntitiesName: function (namesArray, caps = false) {
+        return namesArray.map(fullName => {
+            let withoutExt = fullName.split('.')[0] ;
+            return caps ? func.capitalize(withoutExt) : withoutExt;
+        })
     },
 
     capitalize: function (string) {

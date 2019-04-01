@@ -12,7 +12,7 @@ class Search {
      */
     findLocal(entity, field, keyword) {
         // import data
-        const data = DataHandler.jsonResolver(`${SETTING.DATA_FOLDER}/${entity}.json`);
+        const data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
 
         // get result
         let res = data.filter(record => {

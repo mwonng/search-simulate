@@ -6,14 +6,14 @@ const DataHandler = require('../src/DataHandler');
 test('getAllLocalEntities()', async (t) => {
   const Data = new DataHandler();
   let list = await Data.getAllLocalEntities(SETTING.DATA_FOLDER);
-  let expetation = ['customers.json','organizations.json','tickets.json','users.json'];
+  let expetation = ['organizations.json','tickets.json','users.json'];
   t.deepEqual(list, expetation);
 });
 
 test('getLocalEntityFields()', async t => {
   const Data = new DataHandler();
-  let entityName = 'organizations.json';
-  let result = Data.getLocalEntityFields(`${SETTING.DATA_FOLDER}/${entityName}`)
+  let entityName = 'organizations';
+  let result = Data.getLocalEntityFields(entityName)
   let expetation = new Set([
     "_id",
     "url",
@@ -23,21 +23,23 @@ test('getLocalEntityFields()', async t => {
     "created_at",
     "details",
     "shared_tickets",
-    "tags"
+    "tags",
+    "users",
+    "tickets",
   ])
   t.deepEqual(result, expetation);
 });
 
-test('getJoinedField() for user', t => {
+test('getJoinedFields() for user', t => {
   const Data = new DataHandler();
-  let fields = Data.getJoinedField('users');
-  let expect = ['organization', 'as_submitter', 'as_assignee'];
+  let fields = new Set(Data.getJoinedFields('users'));
+  let expect = new Set(['organization', 'as_submitter', 'as_assignee']);
   t.deepEqual(fields, expect);
 });
 
-test('getOneJoinedData() for user', t => {
+test('getOneBelongsToData() for user', t => {
   const Data = new DataHandler();
-  let fields = Data.getOneJoinedData('user','organization',1);
+  let fields = Data.getOneBelongsToData('organizations', 119, 'name');
   let expect = 'Multron';
   t.deepEqual(fields, expect);
 });

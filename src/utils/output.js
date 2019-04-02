@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const chalk    = require("chalk");
 
 const output = {
     line: (message) => {
@@ -26,7 +27,7 @@ const output = {
                     {
                         type    : 'input',
                         name    : 'continue',
-                        message : `page ${currentPage}/ ${lastPage}, press 'Enter' to next page, press 'q' or 'ctrl + c' to exit : `
+                        message : `'Enter' to next page, answer 'q' or 'ctrl + c' to exit, page ${currentPage}/${lastPage} : `
                     }
                 ]);
                 if (userInput.continue === 'q') {
@@ -50,7 +51,7 @@ const output = {
         } else {
             value = value.toString();
         }
-        return key.padEnd(30) + value.toString().padEnd(50);
+        return chalk.yellow(key.padEnd(30)) + chalk.gray(value.toString().padEnd(50));
     },
 };
 

@@ -24,3 +24,5 @@ yarn-error.log*
 
 # editor config
 /.vscode
+
+/release

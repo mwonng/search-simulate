@@ -22,10 +22,11 @@ module.exports = {
         let attrSet = Data.loadingFields(entity);
         if (attrSet.has(field)) {
             let keywordAnswer = await inquirer.prompt(question.keywordQuestion);
+            let keyword = keywordAnswer.keyword.trim().toLowerCase();
             output.line("---------------------------------------------");
-            output.line(`Searching '${entity}' on '${field}' with value '${keywordAnswer.keyword}'`);
+            output.line(`Searching '${entity}' on '${field}' with value '${keyword}'`);
 
-            let res = await Search.loadingResponse(entity, field, keywordAnswer.keyword);
+            let res = await Search.loadingResponse(entity, field, keyword);
             let withJoinedData = Data.prepareRelatedData(res, entity);
 
             if (withJoinedData.length > 0) {

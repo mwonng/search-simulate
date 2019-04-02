@@ -14,6 +14,7 @@ simulate search within given data.
 - search can match if field is array.
 - search using empty value for records which doesn't have that attribute.
 - search is case insensitive.
+- auto transfer accented letters.
 
 ## Requirement
 - node >= 10,

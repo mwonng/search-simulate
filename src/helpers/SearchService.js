@@ -1,11 +1,11 @@
 const SETTING = require('../../setting');
-
+const normalizeLetter = require('../utils/func').normalizeLetter;
 class Search {
     /**
      * find method locally
-     * @param {String} entity
-     * @param {String} field
-     * @param {String} keyword
+     * @param {String} entity   lowercase
+     * @param {String} field    lowercase
+     * @param {String} keyword  lowercase
      */
     findLocal(entity, field, keyword) {
         const data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
@@ -14,9 +14,9 @@ class Search {
             let currRecord = data[i];
 
             if (Array.isArray(currRecord[field])) {                         // if aim field is array, search in this array;
-                let lowerValueList = currRecord[field].map( ele => ele.toLowerCase());
+                let lowerValueList = currRecord[field].map( ele => normalizeLetter(ele));
                 let set = new Set(lowerValueList);
-                if (set.has(keyword.toLowerCase())) {
+                if (set.has(normalizeLetter(keyword))) {
                     res = [...res, currRecord];
                 }
             }
@@ -27,7 +27,7 @@ class Search {
 
             if (
                 currRecord[field] !== undefined &&
-                currRecord[field].toString().toLowerCase() === keyword.toLowerCase()
+                normalizeLetter(currRecord[field].toString()) === normalizeLetter(keyword)
             ) {
                 res = [...res, currRecord];            // full value search
             }

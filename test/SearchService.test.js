@@ -59,3 +59,12 @@ test('local - result is not exist', t => {
   const exp    = user.filter( u => u._id === 0);
   t.deepEqual(result, exp);
 });
+
+test('local - search not case sensitive', t => {
+  const Search = new SearchService();
+  const resultLow = Search.findLocal('users', 'name', 'roman meyers');
+  const resultCap = Search.findLocal('users', 'name', 'Roman meyers');
+  const exp    = user.filter( u => u.name === "Roman Meyers");
+  t.deepEqual(resultLow.length, exp.length);
+  t.deepEqual(resultCap.length, exp.length);
+});

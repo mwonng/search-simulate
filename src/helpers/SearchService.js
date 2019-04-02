@@ -9,22 +9,29 @@ class Search {
      */
     findLocal(entity, field, keyword) {
         const data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
+        let res = [];
+        for (let i = 0, len = data.length; i < len; i++) {
+            let currRecord = data[i];
 
-        let res = data.filter(record => {
-            if (Array.isArray(record[field])) {                         // if aim field is array, search in this array;
-                let set = new Set(record[field]);
-                return set.has(keyword);
+            if (Array.isArray(currRecord[field])) {                         // if aim field is array, search in this array;
+                let lowerValueList = currRecord[field].map( ele => ele.toLowerCase());
+                let set = new Set(lowerValueList);
+                if (set.has(keyword.toLowerCase())) {
+                    res = [...res, currRecord];
+                }
             }
 
-            if (record[field] === undefined && keyword === "") {        // for empty field
-                return record;
+            if (currRecord[field] === undefined && keyword === "") {        // for empty field
+                res = [...res, currRecord];
             }
 
-            if (record[field] !== undefined) {
-                return record[field].toString() === keyword;            // full value search
+            if (
+                currRecord[field] !== undefined &&
+                currRecord[field].toString().toLowerCase() === keyword.toLowerCase()
+            ) {
+                res = [...res, currRecord];            // full value search
             }
-        });
-
+        }
         return res;
     }
 

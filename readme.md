@@ -13,6 +13,7 @@ simulate search within given data.
 - notification if field not exists before search.
 - search can match if field is array.
 - search using empty value for records which doesn't have that attribute.
+- search is case insensitive.
 
 ## Requirement
 - node >= 10,

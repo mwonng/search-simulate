@@ -3,7 +3,7 @@ const func = {
         return namesArray.map(fullName => {
             let withoutExt = fullName.split('.')[0] ;
             return caps ? func.capitalize(withoutExt) : withoutExt;
-        })
+        });
     },
 
     capitalize: function (string) {
@@ -20,19 +20,18 @@ const func = {
                 result[value] = new Set();
             }
             result[value].add(key);
-        })
+        });
         return result;
     },
 
     arrayMapToObject(array, object_key) {
-        let result = {}
+        let result = {};
         array.forEach(el => {
             let key = el[object_key];
             result[key] = el;
-        })
-
-        return result
+        });
+        return result;
     }
-}
+};
 
 module.exports = func;

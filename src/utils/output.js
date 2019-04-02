@@ -2,13 +2,14 @@ const inquirer = require('inquirer');
 
 const output = {
     line: (message) => {
-        console.log(message)
+        console.log(message);
     },
 
     /**
      * If results are too many, show record by paginator. default setting on ./setting.json
      * @param {Array} records
      * @param {Int} countPerPage
+     * @param {Function} recodesPrintfunc
      */
     pagenatePrint: async (records, countPerPage, recodesPrintfunc) => {
         let currentPage = 1;
@@ -17,8 +18,8 @@ const output = {
 
         while (currentPage <= lastPage) {
             for (let i = (currentPage - 1) * countPerPage; i < currentPage * countPerPage && i < maxIndex; i++) {
-                output.line(`------ >> Result: ${i + 1}/${maxIndex} << ------     `);
-                recodesPrintfunc(records[i])
+                output.line(`-------> Result: ${i + 1}/${maxIndex} <--------     `);
+                recodesPrintfunc(records[i]);
             }
             if (currentPage < lastPage) {
                 const userInput = await inquirer.prompt([
@@ -27,7 +28,7 @@ const output = {
                         name: 'continue',
                         message: `page ${currentPage}/ ${lastPage}, press 'Enter' to next page, press 'q' or 'ctrl + c' to exit:`
                     }
-                ])
+                ]);
                 if (userInput.continue === 'q') {
                     process.exit(1);
                 }
@@ -39,7 +40,7 @@ const output = {
     readableAttrPrint: (currentRecord) => {
         Object.keys(currentRecord).forEach(key => {
             let line = output.readableLine(key, currentRecord[key]);
-            output.line(line)
+            output.line(line);
         });
     },
 
@@ -51,6 +52,6 @@ const output = {
         }
         return key.padEnd(30) + value.toString().padEnd(50);
     },
-}
+};
 
-module.exports = output
+module.exports = output;

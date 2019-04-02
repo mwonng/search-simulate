@@ -19,7 +19,8 @@
     ]
   },
   "devDependencies": {
-    "ava": "^1.4.1"
+    "ava": "^1.4.1",
+    "eslint": "^5.16.0"
   },
   "dependencies": {
     "axios": "^0.18.0",

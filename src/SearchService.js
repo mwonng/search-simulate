@@ -1,6 +1,4 @@
 const SETTING = require('../setting');
-const output = require('./utils/output');
-const error = require('./utils/error');
 
 class Search {
     /**
@@ -10,19 +8,16 @@ class Search {
      * @param {String} keyword
      */
     findLocal(entity, field, keyword) {
-        // import data
         const data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
 
-        // get result
         let res = data.filter(record => {
-            // if aim field is array, search in this array;
-            if (Array.isArray(record[field])) {
+            if (Array.isArray(record[field])) {         // if aim field is array, search in this array;
                 var set = new Set(record[field]);
                 return set.has(keyword);
             }
 
             if (record[field] !== undefined) {
-                return record[field].toString() === keyword
+                return record[field].toString() === keyword;
             }
         });
 
@@ -38,16 +33,6 @@ class Search {
      */
     async loadingResponse(entity, field, keyword) {
         return this.findLocal(entity, field, keyword);
-    }
-
-    printResults(results) {
-        let count = results.length;
-        if (count) {
-            output.pagenatePrint(results, SETTING.SEARCH_RESULT_PER_PAGE, output.readableAttrPrint);
-        } else {
-            output.line('-------------------------')
-            error("No record founded.", false)
-        }
     }
 }
 

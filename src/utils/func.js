@@ -22,6 +22,16 @@ const func = {
             result[value].add(key);
         })
         return result;
+    },
+
+    arrayMapToObject(array, object_key) {
+        let result = {}
+        array.forEach(el => {
+            let key = el[object_key];
+            result[key] = el;
+        })
+
+        return result
     }
 }
 

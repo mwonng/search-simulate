@@ -4,7 +4,9 @@ const func = require('./utils/func');
 
 class DataHandler {
     constructor() {
+        this.schema = require(`${SETTING.SCHEMA_FOLDER}/schema`);
         this.index = this.generateAllIndex();
+        this.mappedData = this.loadingMappedEntity();
     }
 
     isDataReady(folderPath) {
@@ -41,21 +43,15 @@ class DataHandler {
             attr = new Set([...attr, ...Object.keys(record)]);
         })
 
-        // get related attr from schema
-        // let relatedAttr = this.getJoinedFields(entity);
-        // let joinedAttr = new Set([...attr, ...relatedAttr]);
-
         return attr;
     }
 
-    // getJoinedFields(entity) {
-    //     var schema = require(`${SETTING.SCHEMA_FOLDER}/${entity}`);
-    //     let fields = schema.map(setting => setting.joined_name);
-    //     return new Set(fields);
-    // }
+    prepareRelatedData(res, entityOfRes){
+        return res.map( record => this.mergedWithRelatedEntity(record, entityOfRes))
+    }
 
     mergedWithRelatedEntity(el, entity) {
-        let entitySchema = require(`${SETTING.SCHEMA_FOLDER}/schema`);
+        let entitySchema = this.schema
         let belongsTo = entitySchema.filter( schema => schema.entity === entity);
         let hasMany = entitySchema.filter( schema => schema.toEntity === entity);
         let extrabelongsToInfo, hasManyToInfo, joinedRecord = {};
@@ -68,8 +64,6 @@ class DataHandler {
             hasManyToInfo = {...hasManyToInfo, ...this.getOneHasManyToData(el, schemaSetting)};
         })
 
-        // TODO: has many action
-
         joinedRecord = {...el, ...extrabelongsToInfo, ...hasManyToInfo};
         return joinedRecord;
     }
@@ -78,7 +72,7 @@ class DataHandler {
         let index = this.index;
         let { entity, toEntity, foreign_key_name, field_on_entity, toEntity_field } = schemaSetting;
         let currentIndex = index[entity][`${foreign_key_name}_${toEntity}`]
-        let currentRecordIndexValue = currentIndex[record._id];
+        let currentRecordIndexValue = currentIndex[record[pkey]];
         let extraInfo = {}
 
         // if no forien key
@@ -86,10 +80,9 @@ class DataHandler {
             return extraInfo;
         }
 
-        let belongsToEntity = require(`${SETTING.DATA_FOLDER}/${toEntity}.json`);
-        let belongsToEntityObj = this.arrayToObject(belongsToEntity, "_id"); // TODO: put to another position?
+        let belongsToEntityObj = this.mappedData[toEntity];
         let relatedRecord = belongsToEntityObj[currentRecordIndexValue];
-        // console.log(relatedRecord);
+
         extraInfo[field_on_entity] = relatedRecord[toEntity_field];
         return extraInfo;
     }
@@ -98,7 +91,7 @@ class DataHandler {
         let index = this.index;
         let { entity, toEntity, foreign_key_name, field_on_toEntity, entity_field } = schemaSetting;
         let currentIndex = index[toEntity][`${foreign_key_name}_${entity}`]
-        let currentRecordIndexValues = currentIndex[record._id];    // a set
+        let currentRecordIndexValues = currentIndex[record[pkey]];    // a set
         let extraInfo = {}
 
         // if no forien key
@@ -106,8 +99,7 @@ class DataHandler {
             return extraInfo;
         }
 
-        let hasManyEntity = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
-        let hasManyEntityObj = this.arrayToObject(hasManyEntity, "_id"); // TODO: put to another position?
+        let hasManyEntityObj = this.mappedData[entity];
         let relatedRecords = [];
         currentRecordIndexValues.forEach( elem => {
             relatedRecords = [...relatedRecords, hasManyEntityObj[elem][entity_field]];
@@ -129,10 +121,13 @@ class DataHandler {
         return index;
     }
 
+    /**
+     * generate index from schema.
+     */
     generateAllIndex() {
-        let schema = require(`${SETTING.SCHEMA_FOLDER}/schema`);
-
+        let schema = this.schema;
         let index = {};
+
         schema.forEach( s => {
             if (index[s.entity] === undefined) index[s.entity] = {};
             if (index[s.toEntity] === undefined ) index[s.toEntity] = {};
@@ -146,6 +141,17 @@ class DataHandler {
         return index;
     }
 
+    loadingMappedEntity() {
+        let result = {}
+        let entitiesList = func.formateEntitiesName(this.loadingEntitiesList())
+        entitiesList.forEach( entity => {
+            let entityData= require(`${SETTING.DATA_FOLDER}/${entity}.json`);
+            let entityObj = func.arrayMapToObject(entityData, '_id');
+            result[entity] = entityObj;
+        });
+        return result;
+    }
+
     /**
      *
      * @param {String} filePath
@@ -157,16 +163,6 @@ class DataHandler {
         } catch (e) {
             new Promise(() => { throw new Error('Error on jsonResolver()'); });
         }
-    }
-
-    arrayToObject(array, object_key) {
-        let result = {}
-        array.forEach(el => {
-            let key = el[object_key];
-            result[key] = el;
-        })
-
-        return result
     }
 }
 

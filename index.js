@@ -25,7 +25,6 @@ async function main() {
     hello();
     const Search = new SearchService();
     const Data = new DataHandler();
-    const index = Data.generateAllIndex();
 
     try {
         let entitiesArray = Data.loadingEntitiesList();
@@ -81,7 +80,8 @@ async function main() {
                     output.line("---------------------------------------------")
                     output.line(`Searching '${entity}' on '${field}' with value '${keywordAnswer.keyword}'`)
                     let res = await Search.loadingResponse(entity, field, keywordAnswer.keyword);
-                    Search.printResults(res);
+                    let joinedData = Data.prepareRelatedData(res, entity);
+                    Search.printResults(joinedData);
                 } else {
                     error('This field looks not available, please try another field.', true)
                 }

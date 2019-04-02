@@ -1,5 +1,4 @@
 const SETTING = require('../setting');
-const DataHandler = require('./DataHandler');
 const output = require('./utils/output');
 const error = require('./utils/error');
 
@@ -16,7 +15,7 @@ class Search {
 
         // get result
         let res = data.filter(record => {
-            // field type? array?
+            // if aim field is array, search in this array;
             if (Array.isArray(record[field])) {
                 var set = new Set(record[field]);
                 return set.has(keyword);
@@ -27,13 +26,7 @@ class Search {
             }
         });
 
-        let joinedRes = this.prepareRelatedData(res, entity);
-        return joinedRes;
-    }
-
-    prepareRelatedData(res, entityOfRes){
-        let Data = new DataHandler();
-        return res.map( record => Data.mergedWithRelatedEntity(record, entityOfRes))
+        return res;
     }
 
     /**

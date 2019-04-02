@@ -12,7 +12,7 @@ class Search {
 
         let res = data.filter(record => {
             if (Array.isArray(record[field])) {                         // if aim field is array, search in this array;
-                var set = new Set(record[field]);
+                let set = new Set(record[field]);
                 return set.has(keyword);
             }
 

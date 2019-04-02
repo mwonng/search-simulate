@@ -42,18 +42,20 @@ module.exports = {
     list: () => {
         const Data = new DataHandler();
         let entitiesArray = Data.loadingEntitiesList();
-        func.formateEntitiesName(entitiesArray)
-            .forEach(entity => {
-                let data = Data.loadingFields(entity);
-                output.line("---------------------------------------------");
-                output.line(`Available fields for ${entity}:`);
-                output.line("---------------------------------------------");
-                data.forEach(attr => output.line(attr));
-                output.line("  ");
-            });
+        output.pagenatePrint(func.formateEntitiesName(entitiesArray),SETTING.SEARCH_RESULT_PER_PAGE, listEntityFields);
+
+        function listEntityFields(entity) {
+            let data = Data.loadingFields(entity);
+            output.line("---------------------------------------------");
+            output.line(chalk.yellow(`Available fields for ${func.capitalize(entity)}:`));
+            output.line("---------------------------------------------");
+            data.forEach(attr => output.line(chalk.grey(attr)));
+            output.line("  ");
+        }
     },
 
     hello: () => {
+        output.line(chalk.cyan("----------------------------------------------------------------------------------------------------"));
         output.line(chalk.cyan("dP     dP           dP dP           d8888888P                         dP                   dP       "));
         output.line(chalk.cyan("88     88           88 88                .d8'                         88                   88       "));
         output.line(chalk.cyan("88aaaaa88  .d8888b. 88 88 .d8888b.     .d8'   .d8888b. 88d888b. .d888b88 .d8888b. .d8888b. 88  .dP  "));

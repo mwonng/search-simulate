@@ -13,4 +13,4 @@ module.exports = [
     'joined_name'      : 'tickets',
     'value_from_field' : 'subject'
   },
-]
+];

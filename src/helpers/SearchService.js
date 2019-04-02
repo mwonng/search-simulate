@@ -1,4 +1,4 @@
-const SETTING = require('../setting');
+const SETTING = require('../../setting');
 
 class Search {
     /**

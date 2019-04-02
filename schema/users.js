@@ -20,4 +20,4 @@ module.exports = [
     'joined_name'      : 'as_assignee',
     'value_from_field' : 'subject'
   }
-]
+];

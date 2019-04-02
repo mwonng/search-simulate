@@ -1,20 +1,20 @@
-const test = require('ava');
-const SETTING = require('../setting');
-const DataHandler = require('../src/DataHandler');
-const users = require('../datasource/users.json');
+const test          = require('ava');
+const SETTING       = require('../setting');
+const DataHandler   = require('../src/helpers/DataHandler');
+const users         = require('../datasource/users.json');
 const organizations = require('../datasource/organizations.json');
 
 test('getAllLocalEntities()', async t => {
-  const Data = new DataHandler();
-  let list = await Data.getAllLocalEntities(SETTING.DATA_FOLDER);
+  const Data     = new DataHandler();
+  let list       = await Data.getAllLocalEntities(SETTING.DATA_FOLDER);
   let expetation = ['organizations.json','tickets.json','users.json'];
   t.deepEqual(list, expetation);
 });
 
 test('getLocalEntityFields()', t => {
-  const Data = new DataHandler();
+  const Data     = new DataHandler();
   let entityName = 'organizations';
-  let result = Data.getLocalEntityFields(entityName);
+  let result     = Data.getLocalEntityFields(entityName);
   let expetation = new Set([
     "_id",
     "url",
@@ -31,9 +31,9 @@ test('getLocalEntityFields()', t => {
 
 
 test('getOneBelongsToData() for user', t => {
-  const Data = new DataHandler();
+  const Data  = new DataHandler();
   let current = users[0];
-  let result = Data.getOneBelongsToData(
+  let result  = Data.getOneBelongsToData(
       current,
       {
         'entity'            : 'users',
@@ -50,9 +50,9 @@ test('getOneBelongsToData() for user', t => {
 });
 
 test('getOneHasManyToData() for user', t => {
-  const Data = new DataHandler();
+  const Data  = new DataHandler();
   let current = organizations[0];
-  let result = Data.getOneHasManyToData(
+  let result  = Data.getOneHasManyToData(
       current,
       {
         'entity'            : 'users',

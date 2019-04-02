@@ -35,4 +35,4 @@ module.exports = {
             message: 'Enter your keyword(press enter if you want to search empty field):'
         }
     ]
-}
+};

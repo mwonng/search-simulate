@@ -13,8 +13,8 @@ const output = {
      */
     pagenatePrint: async (records, countPerPage, recodesPrintfunc) => {
         let currentPage = 1;
-        let maxIndex = records.length;
-        let lastPage = Math.ceil(maxIndex / countPerPage);
+        let maxIndex    = records.length;
+        let lastPage    = Math.ceil(maxIndex / countPerPage);
 
         while (currentPage <= lastPage) {
             for (let i = (currentPage - 1) * countPerPage; i < currentPage * countPerPage && i < maxIndex; i++) {
@@ -24,9 +24,9 @@ const output = {
             if (currentPage < lastPage) {
                 const userInput = await inquirer.prompt([
                     {
-                        type: 'input',
-                        name: 'continue',
-                        message: `page ${currentPage}/ ${lastPage}, press 'Enter' to next page, press 'q' or 'ctrl + c' to exit:`
+                        type    : 'input',
+                        name    : 'continue',
+                        message : `page ${currentPage}/ ${lastPage}, press 'Enter' to next page, press 'q' or 'ctrl + c' to exit : `
                     }
                 ]);
                 if (userInput.continue === 'q') {

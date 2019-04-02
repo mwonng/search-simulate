@@ -14,13 +14,20 @@ simulate search within given data.
 - search can match if field is array.
 
 ## Requirement
-
 node >= 10,
 npm or yarn installed
 
 ## How to run
 
+### Develop
+`npm install` or `yarn` to install dependencies
+
+and
+
+`./index.js` or `node index.js` to run this CLI
+
 ### Production
+ONLY for build to a excutable CLI on MacOS, Linux or Windows, Note: **you can not add any datasource after build**
 
 `npm run build` or `yarn build`
 
@@ -30,24 +37,13 @@ and
 - `./release/index-linux` if you run on Linux
 - `./release/index-win.exe` if you run on Windows
 
-### Develop
-`npm install` or `yarn`
-
-and
-
-run `npm install` or `yarn` install dependencies
-
-and `./index.js` or `node index.js`
-
 ## Test
-
 `npm run test` or `yarn test`
 
 
 ## Setting
-
 - `SEARCH_RESULT_PER_PAGE`: how many results on every page, default as 5
-- `DATA_FOLDER`: if choose `RES_TYPE` set as `local`, this folder is the location for all json data.
+- `DATA_FOLDER`: this folder is the location for store all json data.
 - `SCHEMA_FOLDER`: schema setting folder
 
 ### Schema setting
@@ -81,7 +77,6 @@ Note: you dont need to set twice for two way relationship, it will auto revert t
 - `field_on_toEntity` : when data joined, the attribute/field name shows on  **belongsTo** entity users, this usually be an array.
 
 ## How to add more local entities
-
 1. put your **json** file into `datasource/` folder
 2. add schema for your own data
 

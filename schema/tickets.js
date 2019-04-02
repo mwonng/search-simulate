@@ -20,4 +20,4 @@ module.exports = [
     'joined_name'      : 'organization',
     'value_from_field' : 'name'
   },
-]
+];

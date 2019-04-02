@@ -12,7 +12,7 @@ const func = {
 
     reverseMap: (object) => {
         let result = {};
-        let keys = Object.keys(object);
+        let keys   = Object.keys(object);
 
         keys.forEach( key => {
             let value = object[key];

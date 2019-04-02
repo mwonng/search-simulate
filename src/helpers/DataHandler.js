@@ -1,6 +1,6 @@
-const SETTING = require('../setting');
+const SETTING = require('../../setting');
 const fs = require('fs');
-const func = require('./utils/func');
+const func = require('../utils/func');
 
 class DataHandler {
     constructor() {
@@ -75,9 +75,9 @@ class DataHandler {
      */
     getOneBelongsToData(record, schemaSetting, pkey='_id') {
         let { entity, toEntity, foreign_key_name, field_on_entity, toEntity_field } = schemaSetting;
-        let currentIndex = this.index[entity][`${foreign_key_name}_${toEntity}`];
+        let currentIndex            = this.index[entity][`${foreign_key_name}_${toEntity}`];
         let currentRecordIndexValue = currentIndex[record[pkey]];
-        let extraInfo = {};
+        let extraInfo               = {};
 
         // if no forien key
         if (currentRecordIndexValue === undefined) {
@@ -86,7 +86,7 @@ class DataHandler {
 
         let belongsToEntityObj = this.mappedData[toEntity];
 
-        let relatedRecord = belongsToEntityObj[currentRecordIndexValue];
+        let relatedRecord      = belongsToEntityObj[currentRecordIndexValue];
 
         // if foreign key has no matched
         if (relatedRecord === undefined) {
@@ -106,9 +106,9 @@ class DataHandler {
      */
     getOneHasManyToData(record, schemaSetting, pkey='_id') {
         let { entity, toEntity, foreign_key_name, field_on_toEntity, entity_field } = schemaSetting;
-        let currentIndex = this.index[toEntity][`${foreign_key_name}_${entity}`];
+        let currentIndex             = this.index[toEntity][`${foreign_key_name}_${entity}`];
         let currentRecordIndexValues = currentIndex[record[pkey]];    // a set
-        let extraInfo = {};
+        let extraInfo                = {};
 
         // if no forien key
         if (currentRecordIndexValues === undefined) {
@@ -116,7 +116,7 @@ class DataHandler {
         }
 
         let hasManyEntityObj = this.mappedData[entity];
-        let relatedRecords = [];
+        let relatedRecords   = [];
         currentRecordIndexValues.forEach( elem => {
             relatedRecords = [...relatedRecords, hasManyEntityObj[elem][entity_field]];
         });
@@ -125,10 +125,10 @@ class DataHandler {
     }
 
     generateEntityIndex(entity, via_field) {
+        let data  = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
         let index = {};
-        let data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
         data.forEach(el => {
-            let key = el._id;
+            let key   = el._id;
             let value = el[via_field];
             if (value) {
                 index[key] = value;
@@ -142,7 +142,7 @@ class DataHandler {
      */
     generateAllIndex() {
         let schema = this.schema;
-        let index = {};
+        let index  = {};
 
         schema.forEach( s => {
             if (index[s.entity] === undefined) index[s.entity] = {};
@@ -158,7 +158,7 @@ class DataHandler {
     }
 
     loadingMappedEntity() {
-        let result = {};
+        let result       = {};
         let entitiesList = func.formateEntitiesName(this.loadingEntitiesList());
 
         entitiesList.forEach( entity => {

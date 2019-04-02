@@ -58,3 +58,9 @@ test('arrayMapToObject()', t => {
     };
     t.deepEqual(result, expect);
 });
+
+test('normalizeLetter()', t => {
+    let res    = func.normalizeLetter("Harris Côpeland");
+    let expect = "harris copeland";
+    t.is(res, expect);
+});

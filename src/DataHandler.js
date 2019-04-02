@@ -38,17 +38,17 @@ class DataHandler {
         })
 
         // get related attr from schema
-        let relatedAttr = this.getJoinedFields(entity);
-        let joinedAttr = new Set([...attr, ...relatedAttr]);
+        // let relatedAttr = this.getJoinedFields(entity);
+        // let joinedAttr = new Set([...attr, ...relatedAttr]);
 
-        return joinedAttr;
+        return attr;
     }
 
-    getJoinedFields(entity) {
-        var schema = require(`${SETTING.SCHEMA_FOLDER}/${entity}`);
-        let fields = schema.map(setting => setting.joined_name);
-        return new Set(fields);
-    }
+    // getJoinedFields(entity) {
+    //     var schema = require(`${SETTING.SCHEMA_FOLDER}/${entity}`);
+    //     let fields = schema.map(setting => setting.joined_name);
+    //     return new Set(fields);
+    // }
 
     mergedWithRelatedEntity(el, entity) {
         let entitySchema = require(`${SETTING.SCHEMA_FOLDER}/${entity}`);

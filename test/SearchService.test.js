@@ -1,6 +1,5 @@
 const test          = require('ava');
 const user          = require('../datasource/users.json');
-const tickets       = require('../datasource/tickets.json');
 const SearchService = require('../src/helpers/SearchService');
 
 test('local - search field is string', t => {

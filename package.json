@@ -1,14 +1,17 @@
 {
-  "name": "zendesk",
+  "name": "zendesk-search-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a cli search within given data",
   "main": "index.js",
   "scripts": {
     "test": "ava test/*.test.js",
     "build": "pkg index.js --out-path ./release"
   },
-  "keywords": [],
-  "author": "",
+  "bin": {
+    "run": "./index.js"
+  },
+  "keywords": ["search", "cli", "file index"],
+  "author": "Michael Wang",
   "license": "ISC",
   "ava": {
     "files": [
@@ -27,9 +30,7 @@
     "eslint": "^5.16.0"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "chalk": "^2.4.2",
-    "figlet": "^1.2.1",
     "inquirer": "^6.2.2"
   }
 }

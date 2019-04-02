@@ -12,10 +12,11 @@ simulate search within given data.
 - cached index for search.
 - friendly reminder if field not exist.
 - search can match if field is array.
+- search using empty value for records which doesn't have that attribute.
 
 ## Requirement
-node >= 10,
-npm or yarn installed
+- node >= 10,
+- npm or yarn installed
 
 ## How to run
 

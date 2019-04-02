@@ -8,7 +8,7 @@
     "build": "pkg index.js --out-path ./release"
   },
   "bin": {
-    "run": "./index.js"
+    "zendesk-search": "./index.js"
   },
   "keywords": ["search", "cli", "file index"],
   "author": "Michael Wang",

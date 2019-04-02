@@ -6,11 +6,11 @@ simulate search within given data.
 ![Screenshot](./src/images/screenshot.png)
 
 ## Feature
-- auto load data.
+- auto load data from folder.
 - show related info via schema.
-- result pagenate.
-- cached index for search.
-- friendly reminder if field not exist.
+- results pagenate.
+- cached index for search results.
+- notification if field not exists before search.
 - search can match if field is array.
 - search using empty value for records which doesn't have that attribute.
 
@@ -67,7 +67,7 @@ For example,
 
 in this setting, users are belongs to organizations, and organizations has many users, the setting shows the relationship bwteen these two entities.
 
-Note: you dont need to set twice for two way relationship, it will auto revert the relationship
+_Note: you don't have to set twice for two way relationship, it will auto revert the relationship_
 
 - `entity` : entity name starts from, which was **hasMany** entity
 - `entity_field` : the field on value connect to organization if search organization entity, should showing organization_users value, the value comes from this field on user

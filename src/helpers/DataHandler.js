@@ -54,11 +54,11 @@ class DataHandler {
         let hasMany = this.schema.filter( schema => schema.toEntity === entity);
         let extrabelongsToInfo, hasManyToInfo, joinedRecord = {};
 
-        belongsTo.forEach( schemaSetting => {
+        belongsTo.forEach( schemaSetting => {               // generate belongsTo entity's field
             extrabelongsToInfo = {...extrabelongsToInfo, ...this.getOneBelongsToData(el, schemaSetting)};
         });
 
-        hasMany.forEach( schemaSetting => {
+        hasMany.forEach( schemaSetting => {                 // generate hasMany entity's field
             hasManyToInfo = {...hasManyToInfo, ...this.getOneHasManyToData(el, schemaSetting)};
         });
 
@@ -124,11 +124,11 @@ class DataHandler {
         return extraInfo;
     }
 
-    generateEntityIndex(entity, via_field) {
+    generateEntityIndex(entity, via_field, pkey="_id") {
         let data  = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
         let index = {};
         data.forEach(el => {
-            let key   = el._id;
+            let key   = el[pkey];
             let value = el[via_field];
             if (value) {
                 index[key] = value;
@@ -157,6 +157,9 @@ class DataHandler {
         return index;
     }
 
+    /**
+     * convert entity from Array to Object with 'id' as key
+     */
     loadingMappedEntity() {
         let result       = {};
         let entitiesList = func.formateEntitiesName(this.loadingEntitiesList());

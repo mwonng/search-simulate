@@ -11,13 +11,17 @@ class Search {
         const data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
 
         let res = data.filter(record => {
-            if (Array.isArray(record[field])) {         // if aim field is array, search in this array;
+            if (Array.isArray(record[field])) {                         // if aim field is array, search in this array;
                 var set = new Set(record[field]);
                 return set.has(keyword);
             }
 
+            if (record[field] === undefined && keyword === "") {        // for empty field
+                return record;
+            }
+
             if (record[field] !== undefined) {
-                return record[field].toString() === keyword;
+                return record[field].toString() === keyword;            // full value search
             }
         });
 

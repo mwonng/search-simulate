@@ -21,6 +21,7 @@ const output = {
             for (let i = (currentPage - 1) * countPerPage; i < currentPage * countPerPage && i < maxIndex; i++) {
                 output.line(`-------> Result: ${i + 1}/${maxIndex} <--------     `);
                 recodesPrintfunc(records[i]);
+                output.line('');
             }
             if (currentPage < lastPage) {
                 const userInput = await inquirer.prompt([

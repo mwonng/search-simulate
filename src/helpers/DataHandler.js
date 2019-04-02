@@ -1,48 +1,18 @@
 const SETTING = require('../../setting');
-const fs = require('fs');
-const func = require('../utils/func');
-
+const File = require('./FileLoader');
 class DataHandler {
     constructor() {
-        this.schema = require(`${SETTING.SCHEMA_FOLDER}/schema`);
-        this.index = this.generateAllIndex();
-        this.mappedData = this.loadingMappedEntity();
-    }
-
-    isDataReady(folderPath) {
-        if (!fs.existsSync(folderPath)) return false;
-        if (fs.readdirSync(folderPath).length <= 1) return false;
-        return true;
+        this.schema = File.loadingSchema();
+        this.index = File.generateAllIndex();
+        this.mappedData = File.loadingMappedEntity();
     }
 
     loadingEntitiesList() {
-        return this.getAllLocalEntities(SETTING.DATA_FOLDER);
+        return File.loadingAllEntities(SETTING.DATA_FOLDER);
     }
 
     loadingFields(entity) {
-        return this.getLocalEntityFields(entity);
-    }
-
-    getAllLocalEntities(folderPath) {
-        if (!this.isDataReady(folderPath)) {
-            throw new Error("Error: getAllLocalEntities() cannot get entities from folder");
-        }
-        return fs.readdirSync(folderPath);
-    }
-
-    /**
-     * getEntityFields() get all available fields in entity among all records in entity
-     * @param   {String}  entityPath
-     * @return  {Set}     attributes set
-     */
-    getLocalEntityFields(entity) {
-        const data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
-        let attr = new Set();
-        for ( let i = 0, len = data.length; i < len; i++) {
-            attr = new Set([...attr, ...Object.keys(data[i])]);
-        }
-
-        return attr;
+        return File.loadingFieldsFromEntity(entity);
     }
 
     prepareRelatedData(res, entityOfRes) {
@@ -122,55 +92,6 @@ class DataHandler {
         });
         extraInfo[field_on_toEntity] = relatedRecords;
         return extraInfo;
-    }
-
-    generateEntityIndex(entity, via_field, pkey="_id") {
-        let data  = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
-        let index = {};
-        data.forEach(el => {
-            let key   = el[pkey];
-            let value = el[via_field];
-            if (value) {
-                index[key] = value;
-            }
-        });
-        return index;
-    }
-
-    /**
-     * generate index from schema.
-     */
-    generateAllIndex() {
-        let schema = this.schema;
-        let index  = {};
-
-        schema.forEach( s => {
-            if (index[s.entity] === undefined) index[s.entity] = {};
-            if (index[s.toEntity] === undefined ) index[s.toEntity] = {};
-
-            let ascIndex = this.generateEntityIndex(s.entity, s.foreign_key_name);
-
-            // add index and reversed index
-            index[s.entity][`${s.foreign_key_name}_${s.toEntity}`] = ascIndex;
-            index[s.toEntity][`${s.foreign_key_name}_${s.entity}`] = func.reverseMap(ascIndex);
-        });
-        return index;
-    }
-
-    /**
-     * convert entity from Array to Object with 'id' as key
-     */
-    loadingMappedEntity() {
-        let result       = {};
-        let entitiesList = func.formateEntitiesName(this.loadingEntitiesList());
-
-        entitiesList.forEach( entity => {
-            let entityData= require(`${SETTING.DATA_FOLDER}/${entity}.json`);
-            let entityObj = func.arrayMapToObject(entityData, '_id');
-            result[entity] = entityObj;
-        });
-
-        return result;
     }
 }
 

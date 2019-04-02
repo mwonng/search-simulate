@@ -3,6 +3,10 @@ const fs = require('fs');
 const func = require('./utils/func');
 
 class DataHandler {
+    constructor() {
+        this.index = this.generateAllIndex();
+    }
+
     isDataReady(folderPath) {
         if (!fs.existsSync(folderPath)) return false;
         if (fs.readdirSync(folderPath).length <= 1) return false;
@@ -51,32 +55,66 @@ class DataHandler {
     // }
 
     mergedWithRelatedEntity(el, entity) {
-        let entitySchema = require(`${SETTING.SCHEMA_FOLDER}/${entity}`);
+        let entitySchema = require(`${SETTING.SCHEMA_FOLDER}/schema`);
+        let belongsTo = entitySchema.filter( schema => schema.entity === entity);
+        let hasMany = entitySchema.filter( schema => schema.toEntity === entity);
+        let extrabelongsToInfo, hasManyToInfo, joinedRecord = {};
+
+        belongsTo.forEach( schemaSetting => {
+            extrabelongsToInfo = {...extrabelongsToInfo, ...this.getOneBelongsToData(el, schemaSetting)};
+        })
+
+        hasMany.forEach( schemaSetting => {
+            hasManyToInfo = {...hasManyToInfo, ...this.getOneHasManyToData(el, schemaSetting)};
+        })
+
+        // TODO: has many action
+
+        joinedRecord = {...el, ...extrabelongsToInfo, ...hasManyToInfo};
+        return joinedRecord;
     }
 
-    getOneBelongsToData(record, entity, forKey, joined_name, value_from_field, pkey='_id') {
-        let belongsToEntity = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
-        let relatedRecord = belongsToEntity.find((el)=> el[pkey] === record[forKey]);
+    getOneBelongsToData(record, schemaSetting, pkey='_id') {
+        let index = this.index;
+        let { entity, toEntity, foreign_key_name, field_on_entity, toEntity_field } = schemaSetting;
+        let currentIndex = index[entity][`${foreign_key_name}_${toEntity}`]
+        let currentRecordIndexValue = currentIndex[record._id];
+        let extraInfo = {}
 
-        if (Array.isArray(value_from_field)) {
-            value_from_field.forEach( element => {
-                let key_name = `${joined_name}_${element}`;
-                record[key_name] = relatedRecord[element];
-            })
-        } else {
-            record[joined_name] = relatedRecord[value_from_field];
+        // if no forien key
+        if (currentRecordIndexValue === undefined) {
+            return extraInfo;
         }
-        return record;
+
+        let belongsToEntity = require(`${SETTING.DATA_FOLDER}/${toEntity}.json`);
+        let belongsToEntityObj = this.arrayToObject(belongsToEntity, "_id"); // TODO: put to another position?
+        let relatedRecord = belongsToEntityObj[currentRecordIndexValue];
+        // console.log(relatedRecord);
+        extraInfo[field_on_entity] = relatedRecord[toEntity_field];
+        return extraInfo;
     }
 
-    getOneHasManyToData(record, entity, forKey, joined_name, value_from_field, pkey='_id') {
+    getOneHasManyToData(record, schemaSetting, pkey='_id') {
+        let index = this.index;
+        let { entity, toEntity, foreign_key_name, field_on_toEntity, entity_field } = schemaSetting;
+        let currentIndex = index[toEntity][`${foreign_key_name}_${entity}`]
+        let currentRecordIndexValues = currentIndex[record._id];    // a set
+        let extraInfo = {}
+
+        // if no forien key
+        if (currentRecordIndexValues === undefined) {
+            return extraInfo;
+        }
+
         let hasManyEntity = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
-        let relatedRecord = hasManyEntity.filter(el => el[forKey] === record[pkey]);
-        let result = relatedRecord.map( el => el[value_from_field]);
-        record[joined_name] = result;
-        return record;
+        let hasManyEntityObj = this.arrayToObject(hasManyEntity, "_id"); // TODO: put to another position?
+        let relatedRecords = [];
+        currentRecordIndexValues.forEach( elem => {
+            relatedRecords = [...relatedRecords, hasManyEntityObj[elem][entity_field]];
+        });
+        extraInfo[field_on_toEntity] = relatedRecords
+        return extraInfo;
     }
-
 
     generateEntityIndex(entity, to_entity, via_field) {
         let index = {};
@@ -119,6 +157,16 @@ class DataHandler {
         } catch (e) {
             new Promise(() => { throw new Error('Error on jsonResolver()'); });
         }
+    }
+
+    arrayToObject(array, object_key) {
+        let result = {}
+        array.forEach(el => {
+            let key = el[object_key];
+            result[key] = el;
+        })
+
+        return result
     }
 }
 

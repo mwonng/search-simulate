@@ -14,8 +14,6 @@ class Search {
         // import data
         const data = require(`${SETTING.DATA_FOLDER}/${entity}.json`);
 
-        // TODO: might can using catch here
-
         // get result
         let res = data.filter(record => {
             // field type? array?
@@ -29,12 +27,13 @@ class Search {
             }
         });
 
-        // let joinedRes = prepareRelatedData(res, entity);
-        return res;
+        let joinedRes = this.prepareRelatedData(res, entity);
+        return joinedRes;
     }
 
     prepareRelatedData(res, entityOfRes){
-        return res.map( record => mergedWithRelatedEntity(record, entityOfRes))
+        let Data = new DataHandler();
+        return res.map( record => Data.mergedWithRelatedEntity(record, entityOfRes))
     }
 
     /**

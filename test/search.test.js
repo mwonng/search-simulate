@@ -6,14 +6,14 @@ test('local - search field is string', t => {
   const Search = new SearchService();
   const result = Search.findLocal('users', 'name', "Loraine Pittman");
   const exp = user.filter( u => u.name === "Loraine Pittman")
-  t.deepEqual(result, exp);
+  t.deepEqual(result.length, exp.length);
 });
 
 test('local - search field is bool', t => {
   const Search = new SearchService();
   const result = Search.findLocal('users', 'active', 'true');
   const exp = user.filter( u => u.active === true)
-  t.deepEqual(result, exp);
+  t.deepEqual(result.length, exp.length);
 });
 
 test('local - search field is empty', t => {
@@ -27,7 +27,7 @@ test('local - search field is array', t => {
   const Search = new SearchService();
   const result = Search.findLocal('users', 'tags', 'Leola');
   const exp = user.filter( u => u.tags.includes('Leola'))
-  t.deepEqual(result, exp);
+  t.deepEqual(result.length, exp.length);
 });
 
 test('local - result is not exist', t => {

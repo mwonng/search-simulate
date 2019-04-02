@@ -1,6 +1,5 @@
 const inquirer      = require('inquirer');
 const chalk         = require("chalk");
-const figlet        = require("figlet");
 const SETTING       = require('../setting');
 const DataHandler   = require('../src/DataHandler');
 const func          = require('../src/utils/func');
@@ -55,14 +54,12 @@ module.exports = {
     },
 
     hello: () => {
-        output.line(
-            chalk.cyan(
-            figlet.textSync("Hello  Zendesk", {
-                font             : "Standard",
-                horizontalLayout : "default",
-                verticalLayout   : "default"
-            })
-            )
-        );
+        output.line(chalk.cyan("dP     dP           dP dP           d8888888P                         dP                   dP       "));
+        output.line(chalk.cyan("88     88           88 88                .d8'                         88                   88       "));
+        output.line(chalk.cyan("88aaaaa88a .d8888b. 88 88 .d8888b.     .d8'   .d8888b. 88d888b. .d888b88 .d8888b. .d8888b. 88  .dP  "));
+        output.line(chalk.cyan("88     88  88ooood8 88 88 88'  `88   .d8'     88ooood8 88'  `88 88'  `88 88ooood8 Y8ooooo. 88888\"  "));
+        output.line(chalk.cyan("88     88  88.  ... 88 88 88.  .88  d8'       88.  ... 88    88 88.  .88 88.  ...       88 88  `8b. "));
+        output.line(chalk.cyan("dP     dP  `88888P' dP dP `88888P'  Y8888888P `88888P' dP    dP `88888P8 `88888P' `88888P' dP   `YP "));
+        output.line(chalk.cyan("----------------------------------------------------------------------------------------------------"));
     }
 };

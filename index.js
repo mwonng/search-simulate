@@ -14,6 +14,7 @@ async function main() {
                 break;
             case 'List all searchable fields':
                 Main.list();
+                Main.search();
                 break;
             case 'Quit':
             default:

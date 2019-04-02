@@ -1,9 +1,17 @@
 ## Summary
-simulate search
+simulate search within given data.
 
 ## Screebshot
 
 ![Screenshot](./src/images/screenshot.png)
+
+## Feature
+- auto load data.
+- show related info via schema.
+- result pagenate.
+- cached index for search.
+- friendly reminder if field not exist.
+- search can match if field is array.
 
 ## Requirement
 
@@ -18,9 +26,9 @@ npm or yarn installed
 
 and
 
-`./release/index-macos` if you run on MacOS
-`./release/index-linux` if you run on Linux
-`./release/index-win.exe` if you run on Windows
+- `./release/index-macos` if you run on MacOS
+- `./release/index-linux` if you run on Linux
+- `./release/index-win.exe` if you run on Windows
 
 ### Develop
 `npm install` or `yarn`
@@ -28,6 +36,7 @@ and
 and
 
 run `npm install` or `yarn` install dependencies
+
 and `./index.js` or `node index.js`
 
 ## Test
@@ -45,9 +54,7 @@ and `./index.js` or `node index.js`
 
 Usually, evey entity has two way of relationship: belongsTo and hasMany.
 
-For example, users are belongs to organizations, and organizations has many users, the setting shows the relationship bwteen these two entities.
-
-Note: you dont need to set twice for two way relationship, it will auto revert the relationship
+For example,
 
 ``` javascript
   {
@@ -61,6 +68,10 @@ Note: you dont need to set twice for two way relationship, it will auto revert t
   },
 ```
 
+in this setting, users are belongs to organizations, and organizations has many users, the setting shows the relationship bwteen these two entities.
+
+Note: you dont need to set twice for two way relationship, it will auto revert the relationship
+
 - `entity` : entity name starts from, which was **hasMany** entity
 - `entity_field` : the field on value connect to organization if search organization entity, should showing organization_users value, the value comes from this field on user
 - `toEntity` : destination entity name, which was **belongsTo** entity
@@ -71,6 +82,9 @@ Note: you dont need to set twice for two way relationship, it will auto revert t
 
 ## How to add more local entities
 
-put your **json** file into `datasource/` folder
+1. put your **json** file into `datasource/` folder
+2. add schema for your own data
 
 ## improvement
+- entity field can be a list or autocompelete
+- entity fields can be cached

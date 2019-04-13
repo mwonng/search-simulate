@@ -86,3 +86,5 @@ _Note: you don't have to set twice for two way relationship, it will auto revert
 ## Improvement
 - entity field can be a list or autocompelete.
 - entity fields can be cached.
+- add many to many relationship.
+- add widecard search or fuzzy search for convenience.

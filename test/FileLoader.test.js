@@ -23,7 +23,7 @@ test('loadingFieldsFromEntity()', t => {
       "tags",
     ]);
     t.deepEqual(result, expetation);
-  });
+});
 
 test('loadingAllEntities()', t => {
     let list       = File.loadingAllEntities(SETTING.DATA_FOLDER);

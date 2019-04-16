@@ -27,6 +27,16 @@ class FileLoader {
         return data;
     }
 
+    static loadingAllEntityFields() {
+        let entitiesList = func.formateEntitiesName(this.loadingAllEntities(SETTING.DATA_FOLDER));
+        let allEntityFieldsCache = {};
+        entitiesList.forEach( entity => {
+            allEntityFieldsCache[entity] = this.loadingFieldsFromEntity(entity);
+        });
+
+        return allEntityFieldsCache;
+    }
+
     /**
      * getEntityFields() get all available fields in entity among all records in entity
      * @param   {String}  entityPath

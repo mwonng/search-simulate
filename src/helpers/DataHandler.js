@@ -5,6 +5,7 @@ class DataHandler {
         this.schema = File.loadingSchema();
         this.index = File.generateAllIndex();
         this.mappedData = File.loadingMappedEntity();
+        this.allEntityFields = File.loadingAllEntityFields();
     }
 
     loadingEntitiesList() {

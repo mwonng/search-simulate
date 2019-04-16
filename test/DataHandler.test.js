@@ -43,3 +43,22 @@ test('getOneHasManyToData() for user', t => {
 
   t.deepEqual(result, expect);
 });
+
+
+test('loadingFieldsFromEntity on cache in memory', t => {
+    let entityName = 'organizations';
+    let Data       = new DataHandler();
+    let expetation = new Set([
+        "_id",
+        "url",
+        "external_id",
+        "name",
+        "domain_names",
+        "created_at",
+        "details",
+        "shared_tickets",
+        "tags",
+    ]);
+    t.is(Object.keys(Data.allEntityFields).length, 3);
+    t.deepEqual(Data.allEntityFields[entityName], expetation);
+});

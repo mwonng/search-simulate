@@ -7,6 +7,7 @@ const SearchService = require('./helpers/SearchService');
 const question      = require('../question/index');
 const output        = require('../src/utils/output');
 const error         = require('../src/utils/error');
+inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
 
 module.exports = {
     search: async () => {
@@ -16,7 +17,9 @@ module.exports = {
 
         let searchAns = await inquirer.prompt(question.searchQuestion(entitiesArray));
         let entity    = searchAns.entity.trim().toLowerCase();
-        let field     = searchAns.field.trim().toLowerCase();
+        let fieldAns = await inquirer.prompt(question.fieldQuestion(Data.allEntityFields[entity]));
+
+        let field     = fieldAns.field.trim().toLowerCase();
 
         // loading and check attributes/field first
         let attrSet = Data.loadingFields(entity);
@@ -46,7 +49,8 @@ module.exports = {
         output.pagenatePrint(func.formateEntitiesName(entitiesArray),SETTING.SEARCH_RESULT_PER_PAGE, listEntityFields);
 
         function listEntityFields(entity) {
-            let data = Data.loadingFields(entity);
+            // let data = Data.loadingFields(entity);
+            let data = Data.allEntityFields[entity];
             output.line("---------------------------------------------");
             output.line(chalk.yellow(`Available fields for ${func.capitalize(entity)}:`));
             output.line("---------------------------------------------");
